@@ -4,25 +4,10 @@ import "./style.css";
 //get DPI
 let dpi = window.devicePixelRatio;
 
-
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-
-function fix_dpi() {
-  let style = {
-    height() {
-      return +getComputedStyle(canvas).getPropertyValue('height').slice(0,-2);
-    },
-    width() {
-      return +getComputedStyle(canvas).getPropertyValue('width').slice(0,-2);
-    }
-  }
-  console.log(style.width())
-  //set the correct attributes for a crystal clear image!
-  canvas.setAttribute('width', style.width() * dpi);
-  canvas.setAttribute('height', style.height() * dpi);
-}
-fix_dpi()
+canvas.setAttribute("height", canvas.clientHeight * dpi);
+canvas.setAttribute("width", canvas.clientWidth * dpi);
 
 function getCanvasProperties() {
   return { width: canvas.width, height: canvas.height };
@@ -42,7 +27,7 @@ function drawViewport(padding = 0) {
   return { x, y, width, height}
 }
 
-function drawXAxis(viewport, stride = 5, width = 1, color = "#757575") {
+function drawXAxis(viewport, stride = 5, width = 0.4, color = "#333") {
   const strides = (100 / stride);
   const margin = viewport.width / strides;
   
@@ -59,7 +44,7 @@ function drawXAxis(viewport, stride = 5, width = 1, color = "#757575") {
   ctx.stroke();
 }
 
-function drawYAxis(viewport, stride = 5, width = 1, color = "#757575") {
+function drawYAxis(viewport, stride = 5, width = 0.4, color = "#333") {
   const strides = (100 / stride);
   const margin = viewport.height / strides;
   
@@ -75,8 +60,6 @@ function drawYAxis(viewport, stride = 5, width = 1, color = "#757575") {
   
   ctx.stroke();
 }
-
-
 
 const viewport = drawViewport(5);
 drawXAxis(viewport, 10);
