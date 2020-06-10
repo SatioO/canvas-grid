@@ -11,6 +11,10 @@ function getCanvasProperties() {
   return { width: canvas.width, height: canvas.height };
 }
 
+function round(value) {
+  return Math.round(value)
+}
+
 function drawViewport(padding = 0) {
   const properties = getCanvasProperties();
   const x = properties.width / 100 * padding;
@@ -18,15 +22,10 @@ function drawViewport(padding = 0) {
   const width = properties.width - (x * 2);
   const height = properties.height - (x * 2);
 
-  // ctx.fillStyle = "green";
-  // ctx.strokeStyle = "red";
-  // ctx.lineWidth = 0.2;
-  // ctx.strokeRect(x, y, width, height);
-
   return { x, y, width, height}
 }
 
-function drawXAxis(viewport, stride = 5, width = 0.5, color = "#333") {
+function drawXAxis(viewport, stride = 5, width = 1, color = "#777") {
   const strides = (100 / stride);
   const margin = viewport.width / strides;
   
@@ -35,14 +34,14 @@ function drawXAxis(viewport, stride = 5, width = 0.5, color = "#333") {
   ctx.strokeStyle = color;
 
   for(let i = 0; i <= strides; i++) {
-    ctx.moveTo(viewport.x + margin * i, viewport.y);
-    ctx.lineTo(viewport.x + margin * i, viewport.height + (viewport.y));
+    ctx.moveTo(round(viewport.x + margin * i) + 0.5, viewport.y);
+    ctx.lineTo(round(viewport.x + margin * i) + 0.5, viewport.height + (viewport.y));
   }
   
   ctx.stroke();
 }
 
-function drawYAxis(viewport, stride = 5, width = 0.5, color = "#333") {
+function drawYAxis(viewport, stride = 5, width = 1, color = "#777") {
   const strides = (100 / stride);
   const margin = viewport.height / strides;
   
@@ -51,13 +50,22 @@ function drawYAxis(viewport, stride = 5, width = 0.5, color = "#333") {
   ctx.strokeStyle = color;
 
   for(let i = 0; i <= strides; i++) {
-    ctx.moveTo(viewport.x, viewport.y + margin * i);
-    ctx.lineTo(viewport.width + (viewport.x), viewport.y + margin * i);
+    ctx.moveTo(viewport.x, round(viewport.y + margin * i) + 0.5);
+    ctx.lineTo(viewport.width + (viewport.x), round(viewport.y + margin * i) + 0.5);
   }
   
   ctx.stroke();
 }
 
+window.addEventListener("resize", (e) => {
+  canvas.width = window.innerWidth - 8;
+  canvas.height = window.innerHeight - 8;
+
+  const viewport = drawViewport(5);
+  drawXAxis(viewport)
+  drawYAxis(viewport)
+})
+
 const viewport = drawViewport(5);
-drawXAxis(viewport)
-drawYAxis(viewport)
+drawXAxis(viewport);
+drawYAxis(viewport);
