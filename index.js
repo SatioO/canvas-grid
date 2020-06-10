@@ -58,6 +58,6 @@ function drawYAxis(viewport, stride = 5, width = 0.4, color = "#333", dash = 6) 
 }
 
 const viewport = drawViewport(5);
-drawXAxis(viewport, 10);
-drawYAxis(viewport, 10);
+drawXAxis(viewport, 6);
+drawYAxis(viewport, 6);
 
