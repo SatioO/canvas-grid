@@ -1,11 +1,28 @@
 // Import stylesheets
 import "./style.css";
 
+//get DPI
+let dpi = window.devicePixelRatio;
+
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth - 8;
-canvas.height = window.innerHeight - 8;
+function fix_dpi() {
+  let style = {
+    height() {
+      return +getComputedStyle(canvas).getPropertyValue('height').slice(0,-2);
+    },
+    width() {
+      return +getComputedStyle(canvas).getPropertyValue('width').slice(0,-2);
+    }
+  }
+  console.log(style.width())
+  //set the correct attributes for a crystal clear image!
+  canvas.setAttribute('width', style.width() * dpi);
+  canvas.setAttribute('height', style.height() * dpi);
+}
+fix_dpi()
 
 function getCanvasProperties() {
   return { width: canvas.width, height: canvas.height };
@@ -25,7 +42,7 @@ function drawViewport(padding = 0) {
   return { x, y, width, height}
 }
 
-function drawXAxis(viewport, stride = 5, width = 0.7, color = "#ddd") {
+function drawXAxis(viewport, stride = 5, width = 1, color = "#757575") {
   const strides = (100 / stride);
   const margin = viewport.width / strides;
   
@@ -35,14 +52,14 @@ function drawXAxis(viewport, stride = 5, width = 0.7, color = "#ddd") {
   ctx.setLineDash([6, 6]);
 
   for(let i = 0; i <= strides; i++) {
-    ctx.moveTo(round(viewport.x + margin * i) + 0.5, viewport.y);
-    ctx.lineTo(round(viewport.x + margin * i) + 0.5, viewport.height + (viewport.y));
+    ctx.moveTo(viewport.x + margin * i, viewport.y);
+    ctx.lineTo(viewport.x + margin * i, viewport.height + (viewport.y));
   }
   
   ctx.stroke();
 }
 
-function drawYAxis(viewport, stride = 5, width = 0.7, color = "#ddd") {
+function drawYAxis(viewport, stride = 5, width = 1, color = "#757575") {
   const strides = (100 / stride);
   const margin = viewport.height / strides;
   
@@ -52,22 +69,16 @@ function drawYAxis(viewport, stride = 5, width = 0.7, color = "#ddd") {
   ctx.setLineDash([6, 6]);
 
   for(let i = 0; i <= strides; i++) {
-    ctx.moveTo(viewport.x, round(viewport.y + margin * i) + 0.5);
-    ctx.lineTo(viewport.width + (viewport.x), round(viewport.y + margin * i) + 0.5);
+    ctx.moveTo(viewport.x, viewport.y + margin * i);
+    ctx.lineTo(viewport.width + (viewport.x), viewport.y + margin * i);
   }
   
   ctx.stroke();
 }
 
-window.addEventListener("resize", (e) => {
-  canvas.width = window.innerWidth - 8;
-  canvas.height = window.innerHeight - 8;
 
-  const viewport = drawViewport(5);
-  drawXAxis(viewport, 8)
-  drawYAxis(viewport, 8)
-})
 
 const viewport = drawViewport(5);
-drawXAxis(viewport, 8);
-drawYAxis(viewport, 8);
+drawXAxis(viewport, 10);
+drawYAxis(viewport, 10);
+
