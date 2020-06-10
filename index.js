@@ -18,26 +18,46 @@ function drawViewport(padding = 0) {
   const width = properties.width - (x * 2);
   const height = properties.height - (x * 2);
 
-  ctx.fillStyle = "green";
-  ctx.strokeStyle = "red";
-  ctx.lineWidth = 0.2;
-  ctx.strokeRect(x, y, width, height);
+  // ctx.fillStyle = "green";
+  // ctx.strokeStyle = "red";
+  // ctx.lineWidth = 0.2;
+  // ctx.strokeRect(x, y, width, height);
 
   return { x, y, width, height}
 }
 
-function drawXAxis(viewport, stride = 1) {
+function drawXAxis(viewport, stride = 5, width = 0.5, color = "#333") {
   const strides = (100 / stride);
-
+  const margin = viewport.width / strides;
+  
   ctx.beginPath();
-  ctx.moveTo(viewport.x, viewport.y);
+  ctx.lineWidth = width;
+  ctx.strokeStyle = color;
 
-  // for(let i = 1; i <= strides; i++) {
-      
-  // }
+  for(let i = 0; i <= strides; i++) {
+    ctx.moveTo(viewport.x + margin * i, viewport.y);
+    ctx.lineTo(viewport.x + margin * i, viewport.height + (viewport.y));
+  }
+  
+  ctx.stroke();
+}
+
+function drawYAxis(viewport, stride = 5, width = 0.5, color = "#333") {
+  const strides = (100 / stride);
+  const margin = viewport.height / strides;
+  
+  ctx.beginPath();
+  ctx.lineWidth = width;
+  ctx.strokeStyle = color;
+
+  for(let i = 0; i <= strides; i++) {
+    ctx.moveTo(viewport.x, viewport.y + margin * i);
+    ctx.lineTo(viewport.width + (viewport.x), viewport.y + margin * i);
+  }
   
   ctx.stroke();
 }
 
 const viewport = drawViewport(5);
 drawXAxis(viewport)
+drawYAxis(viewport)
