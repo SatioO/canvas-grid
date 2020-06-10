@@ -25,13 +25,14 @@ function drawViewport(padding = 0) {
   return { x, y, width, height}
 }
 
-function drawXAxis(viewport, stride = 5, width = 1, color = "#777") {
+function drawXAxis(viewport, stride = 5, width = 0.7, color = "#ddd") {
   const strides = (100 / stride);
   const margin = viewport.width / strides;
   
   ctx.beginPath();
   ctx.lineWidth = width;
   ctx.strokeStyle = color;
+  ctx.setLineDash([6, 6]);
 
   for(let i = 0; i <= strides; i++) {
     ctx.moveTo(round(viewport.x + margin * i) + 0.5, viewport.y);
@@ -41,13 +42,14 @@ function drawXAxis(viewport, stride = 5, width = 1, color = "#777") {
   ctx.stroke();
 }
 
-function drawYAxis(viewport, stride = 5, width = 1, color = "#777") {
+function drawYAxis(viewport, stride = 5, width = 0.7, color = "#ddd") {
   const strides = (100 / stride);
   const margin = viewport.height / strides;
   
   ctx.beginPath();
   ctx.lineWidth = width;
   ctx.strokeStyle = color;
+  ctx.setLineDash([6, 6]);
 
   for(let i = 0; i <= strides; i++) {
     ctx.moveTo(viewport.x, round(viewport.y + margin * i) + 0.5);
@@ -62,10 +64,10 @@ window.addEventListener("resize", (e) => {
   canvas.height = window.innerHeight - 8;
 
   const viewport = drawViewport(5);
-  drawXAxis(viewport)
-  drawYAxis(viewport)
+  drawXAxis(viewport, 8)
+  drawYAxis(viewport, 8)
 })
 
 const viewport = drawViewport(5);
-drawXAxis(viewport);
-drawYAxis(viewport);
+drawXAxis(viewport, 8);
+drawYAxis(viewport, 8);
