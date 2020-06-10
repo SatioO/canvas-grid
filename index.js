@@ -13,10 +13,6 @@ function getCanvasProperties() {
   return { width: canvas.width, height: canvas.height };
 }
 
-function round(value) {
-  return Math.round(value)
-}
-
 function drawViewport(padding = 0) {
   const properties = getCanvasProperties();
   const x = properties.width / 100 * padding;
@@ -27,14 +23,14 @@ function drawViewport(padding = 0) {
   return { x, y, width, height}
 }
 
-function drawXAxis(viewport, stride = 5, width = 0.4, color = "#333") {
+function drawXAxis(viewport, stride = 5, width = 0.4, color = "#333", dash = 6) {
   const strides = (100 / stride);
   const margin = viewport.width / strides;
   
   ctx.beginPath();
   ctx.lineWidth = width;
   ctx.strokeStyle = color;
-  ctx.setLineDash([6, 6]);
+  ctx.setLineDash([dash, dash]);
 
   for(let i = 0; i <= strides; i++) {
     ctx.moveTo(viewport.x + margin * i, viewport.y);
@@ -44,14 +40,14 @@ function drawXAxis(viewport, stride = 5, width = 0.4, color = "#333") {
   ctx.stroke();
 }
 
-function drawYAxis(viewport, stride = 5, width = 0.4, color = "#333") {
+function drawYAxis(viewport, stride = 5, width = 0.4, color = "#333", dash = 6) {
   const strides = (100 / stride);
   const margin = viewport.height / strides;
   
   ctx.beginPath();
   ctx.lineWidth = width;
   ctx.strokeStyle = color;
-  ctx.setLineDash([6, 6]);
+  ctx.setLineDash([dash, dash]);
 
   for(let i = 0; i <= strides; i++) {
     ctx.moveTo(viewport.x, viewport.y + margin * i);
